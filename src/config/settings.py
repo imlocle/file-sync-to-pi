@@ -10,8 +10,8 @@ class Settings(BaseSettings):
     pi_ip: str
     pi_movies: str = f"/mnt/external/{MOVIES_DIR}/"
     pi_tv: str = f"/mnt/external/{TV_SHOWS_DIR}/"
-    movie_exts: set = {".mp4", ".mkv", ".avi", ".mov"}
-    skip_files: set = {".DS_Store"}
+    file_exts: set = {".mp4", ".mkv", ".avi", ".mov", ".webm", ".flv", ".srt"}
+    skip_files: set = set()
 
     model_config = SettingsConfigDict(
         env_file=".env", env_file_encoding="utf-8", extra="ignore"

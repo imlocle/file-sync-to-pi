@@ -2,19 +2,21 @@ import os
 import subprocess
 import sys
 import re
+from typing import Optional, Set
 
 
 class FileTransferService:
-    def __init__(self, pi_user, pi_ip, pi_movies, pi_tv):
+    def __init__(
+        self, pi_user: str, pi_ip: str, pi_movies: str, pi_tv: str, file_exts: Set[str]
+    ):
         self.pi_user = pi_user
         self.pi_host = pi_ip
         self.pi_movies = pi_movies
         self.pi_tv = pi_tv
+        self.file_exts = file_exts
         self.env = os.environ.copy()
-        # Supported video file extensions
-        self.video_exts = [".mp4", ".mkv", ".avi", ".mov", ".webm", ".flv" ".srt"]
 
-    def _print_progress_bar(self, percentage: int, bar_length: int = 30):
+    def _print_progress_bar(self, percentage: int, bar_length: int = 30) -> None:
         """Draw a dynamic SCP progress bar in the console."""
         filled_len = int(bar_length * percentage // 100)
         bar = "█" * filled_len + "-" * (bar_length - filled_len)
@@ -48,7 +50,7 @@ class FileTransferService:
 
         try:
             for line in process.stderr:
-                match = progress_pattern.search(line)
+                match: Optional[re.Match[str]] = progress_pattern.search(line)
                 if match:
                     percent = int(match.group(1))
                     self._print_progress_bar(percent)
@@ -60,7 +62,7 @@ class FileTransferService:
                 print(f"✅ Transfer completed: {source_path}")
                 return True
             else:
-                stderr_output = process.stderr.read()
+                stderr_output: Optional[str] = process.stderr.read()
                 print(
                     f"\n❌ SCP failed for {source_path}, exit code {process.returncode}"
                 )
@@ -141,7 +143,7 @@ class FileTransferService:
         video_files = []
         for root, _, files in os.walk(folder_path):
             for f in files:
-                if os.path.splitext(f)[1].lower() in self.video_exts:
+                if os.path.splitext(f)[1].lower() in self.file_exts:
                     video_files.append(os.path.join(root, f))
 
         total_files = len(video_files)
