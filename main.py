@@ -19,6 +19,7 @@ def main():
         settings.pi_ip,
         settings.pi_movies,
         settings.pi_tv,
+        settings.file_exts,
     )
     deletion_service = FileDeletionService()
     monitor_repo = FileMonitorRepository(

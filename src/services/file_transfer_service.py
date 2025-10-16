@@ -4,6 +4,8 @@ import sys
 import re
 from typing import Optional, Set
 
+from src.utils.constants import MOVIES_DIR, TV_SHOWS_DIR
+
 
 class FileTransferService:
     def __init__(
@@ -94,7 +96,7 @@ class FileTransferService:
         # Determine watch root depending on type
         watch_root = os.path.join(
             os.path.expanduser("~/Transfers"),
-            "TV_shows" if dest_type == "tv" else "Movies",
+            TV_SHOWS_DIR if dest_type == "tv" else MOVIES_DIR,
         )
 
         # Relative path for remote destination
@@ -136,7 +138,7 @@ class FileTransferService:
         # Determine root folder for relative paths
         watch_root = os.path.join(
             os.path.expanduser("~/Transfers"),
-            "TV_shows" if dest_type == "tv" else "Movies",
+            TV_SHOWS_DIR if dest_type == "tv" else MOVIES_DIR,
         )
 
         # Gather video files
